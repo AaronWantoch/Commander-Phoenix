@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Shooting : MonoBehaviour
+{
+    public void Shoot(object sender, Gun.ShootingEventArgs args)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(args.fromWhere.position, args.fromWhere.forward, out hit, args.range))
+            args.hit = hit;
+        else
+            args.hit = new RaycastHit();
+    }
+
+    public void DealDamage(object sender, Gun.ShootingEventArgs args)
+    {
+        Health health;
+        if (args.hit.collider != null)
+        {
+            health = args.hit.collider.GetComponentInParent<Health>();
+            if(health != null)
+            {
+                
+                health.DeacreaseHealth(args.damage);
+            }
+                
+        }
+    }
+}
